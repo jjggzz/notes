@@ -1,0 +1,46 @@
+# gin框架
+
+## gin框架的安装
+
+ 在GOPATH下执行 go get -u [github.com/gin-gonic/gin](http://github.com/gin-gonic/gin) 安装gin框架。
+
+```SHELL
+go get -u github.com/gin-gonic/gin
+```
+
+
+
+若缺少protobuf依赖包，请参考https://github.com/jjggzz/protobuf
+
+## helloworld
+
+```go
+package main
+
+import (
+   "fmt"
+   "github.com/gin-gonic/gin"
+   "net/http"
+)
+
+func main() {
+   //初始化一个引擎
+   engine := gin.Default()
+
+   //为get请求hello添加处理方法，可以是匿名函数，也可以是某个函数
+   //函数的类型必须是 func(*Context)
+   engine.GET("hello", func(context *gin.Context) {
+      //当函数get请求到达后，什么都不做，直接返回字符串world
+      context.String(http.StatusOK,"world")
+   })
+
+   //启动引擎，默认监听8080
+   err := engine.Run()
+   if err != nil {
+      fmt.Print(err)
+   }
+}
+```
+
+
+
