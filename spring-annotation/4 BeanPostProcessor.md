@@ -4,7 +4,8 @@
 
 1. postProcessBeforeInitialization 这个方法在bean初始化之前调用（即在init-method指定的方法或者afterPropertiesSet方法或者@PostConstruct标注的方法之前调用）
 2. postProcessAfterInitialization 这个方法在bean初始化之后调用（即在init-method指定的方法或者afterPropertiesSet方法或者@PostConstruct标注的方法之后调用）
-3. 可以通过它来进行增强bean的功能，代理bean，替换bean等等骚操作
+3. 可以通过它来进行增强bean的功能，代理bean，替换bean等等操作
+4. spring底层通过它实现赋值，注入其他组件，@Autowired，生命周期注解（@PostConstruct，@PreDestroy）功能，@Async等等
 
 ```java
 @Configuration
