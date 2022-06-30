@@ -1,6 +1,6 @@
 # BeanPostProcessor
 
-它可以在容器初始化，bean初始化的时候做一些额外的操作，它有两个方法：
+它是**bean的后置处理器**，它可以在bean创建后，bean初始化前后做一些额外的操作，它有两个方法：
 
 1. postProcessBeforeInitialization 这个方法在bean初始化之前调用（即在init-method指定的方法或者afterPropertiesSet方法或者@PostConstruct标注的方法之前调用）
 2. postProcessAfterInitialization 这个方法在bean初始化之后调用（即在init-method指定的方法或者afterPropertiesSet方法或者@PostConstruct标注的方法之后调用）

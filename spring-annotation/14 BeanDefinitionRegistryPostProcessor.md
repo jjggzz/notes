@@ -1,0 +1,6 @@
+# BeanDefinitionRegistryPostProcessor
+
+从名字可知他是Bean定义的后置处理器。可以在bean定义加载完成后做一些额外的拓展。它的调用在BeanFactoryPostProcessor之前调用
+
+1. 它在bean工厂标准初始化之后调用，此时所有的bean的定义已经解析完毕，我们可以在此处再自定义的往bean工厂中添加bean定义
+2. 它主要在refresh()方法的invokeBeanFactoryPostProcessors方法这一步进行调用，初始化和调用过程与BeanFactoryPostProcessor类似
