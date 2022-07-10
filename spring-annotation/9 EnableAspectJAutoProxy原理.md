@@ -82,7 +82,8 @@
    1. 首先判断bean是否在advisedBeans中，advisedBeans保存了所有需要增强的bean，value为true表示已经增强过了
    2. 判断当前bean是否是基础设施类型（实现了Advice、Pointcut、Advisor、AopInfrastructureBean中的任何一个都属于基础类型），或者是否需要跳过（beanName表示了一个原始实例），如果满足任何一个，则不增强它（默认情况下是返回false的）
    3. 所以AnnotationAwareAspectJAutoProxyCreator的postProcessBeforeInstantiation方法返回了空，也就意味着doCreateBean会执行，会正常的创建Bean对象
-   4. 正常创建bean实例后后会调用AnnotationAwareAspectJAutoProxyCreator的postProcessAfterInitialization方法返回一个代理后的bean
+   4. **正常创建bean实例后后会调用AnnotationAwareAspectJAutoProxyCreator的postProcessAfterInitialization方法返回一个代理后的bean**
+   5. **需要注意的是如果是循环依赖情况下返回代理对象的时机AbstractAutoProxyCreateor在getEarlyBeanReference方法调用时**
 
 8. AnnotationAwareAspectJAutoProxyCreator怎样返回一个代理后的bean呢？
 
