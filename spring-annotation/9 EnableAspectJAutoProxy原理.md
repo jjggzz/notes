@@ -69,15 +69,7 @@
 
 5. 经过第4步AnnotationAwareAspectJAutoProxyCreator被注册到容器中了，那么在**后续的bean注册**的过程中都会调用AnnotationAwareAspectJAutoProxyCreator来处理bean的注册
 
-6. 那么spring是怎样代理bean的呢？是通过AnnotationAwareAspectJAutoProxyCreator在创建bean之前尝试返回代理对象
-
-   1. 在doCreateBean之前会调用org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#resolveBeforeInstantiation方法，如果返回了一个对象那么就不会走后面的正常创建bean流程
-   2. resolveBeforeInstantiation中是获取所有的InstantiationAwareBeanPostProcessor的实例，并调用postProcessBeforeInstantiation方法尝试返回一个实例
-   3. 如果返回了一个实例那么对该实例调用容器中的所有BeanPostProcessor的postProcessAfterInitialization方法
-   4. 经过2、3两个步骤，如果返回的对象不为空，则不会执行后续的doCreateBean
-   5. 而AnnotationAwareAspectJAutoProxyCreator就是通过这种方式返回代理的bean对象
-
-7. AnnotationAwareAspectJAutoProxyCreator是怎样实现代理bean的呢？
+6. AnnotationAwareAspectJAutoProxyCreator是怎样实现代理bean的呢？
 
    1. 首先判断bean是否在advisedBeans中，advisedBeans保存了所有需要增强的bean，value为true表示已经增强过了
    2. 判断当前bean是否是基础设施类型（实现了Advice、Pointcut、Advisor、AopInfrastructureBean中的任何一个都属于基础类型），或者是否需要跳过（beanName表示了一个原始实例），如果满足任何一个，则不增强它（默认情况下是返回false的）
@@ -85,7 +77,7 @@
    4. **正常创建bean实例后后会调用AnnotationAwareAspectJAutoProxyCreator的postProcessAfterInitialization方法返回一个代理后的bean**
    5. **需要注意的是如果是循环依赖情况下返回代理对象的时机AbstractAutoProxyCreateor在getEarlyBeanReference方法调用时**
 
-8. AnnotationAwareAspectJAutoProxyCreator怎样返回一个代理后的bean呢？
+7. AnnotationAwareAspectJAutoProxyCreator怎样返回一个代理后的bean呢？
 
    1. warpIfNecessary中获取当前bean的所有增强器（通知方法）
    2. 如果不为空，则将当前bean设置到advisedBeans中，并且标识为已增强(value设置为true)
