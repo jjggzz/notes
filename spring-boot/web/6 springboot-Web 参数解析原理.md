@@ -135,3 +135,9 @@
 
 6. 调用处理器执行链的完成后处理方法（其实就是依次调用拦截器的afterCompletion方法）
 
+
+
+**要注意的是，解析@RequestBody注解的解析器是RequestResponseBodyMethodProcessor，内部使用了HttpMessageConverter的实现类来帮助转换，默认情况下mvc使用MappingJackson2HttpMessageConverter来进行json与java对象进行转换。我们可以通过org.springframework.web.servlet.config.annotation.WebMvcConfigurer#extendMessageConverters来注册我们自己的消息转换器，需要注意的是，消息转换器的遍历匹配是短路的**
+
+**解析通用表单的解析器是ServletModelAttributeMethodProcessor，内部使用的是webDataBinder来进行数据绑定。webDataBinder里面使用GenericConverter的实现类来实现请求参数的转换，我们可以实现Converter<T,S>来自定义转换器（mvc通过适配器将我们写的Converter适配成GenericConverter），通过org.springframework.web.servlet.config.annotation.WebMvcConfigurer#addFormatters注册**
+
