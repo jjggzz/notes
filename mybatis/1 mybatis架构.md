@@ -1,0 +1,11 @@
+# mybati架构
+mybatis从架构层面上分为四部分。第一部分为为引导层，它用来解析相关主配置文件和mapper映射文件。第二部分为接口层，它与用户进行交流，接收用户提交的sql发起数据库操作。第三部分为数据处理层，它接收用户提交的sql和参数，执行sql，转换返回值类型。第四部分为支撑层，它提供了事务管理、连接池相关、缓存相关的功能
+
+## 引导层
+主要执行xml相关的操作，读取xml数据，从中提取配置信息和mapper中sql信息，最终构建成一个Configuration对象（也可以通过API的方式直接构建Configuration对象），通过它最终创建出SqlSessionFactory对象
+
+## 接口层
+通过SqlSessionFactory可以获取到sqlSession对象，可以通过它提交sql操作数据库，也可以获取mapper接口执行数据库的操作（此时sql从xml文件中获取或者从注解上获取），但内部依旧是通过sqlSession进行数据库操作
+
+## 数据操作层
+利用ParameterHandler将用户设置的参数转换成jdbc需要的参数。利用SqlSource将参数与sql动态的生成要执行的sql。由发StatementHandler起数据库调用，获取调用结果。由ResultSetHandler将数据库返回的结果转换为用户期望的数据类型
