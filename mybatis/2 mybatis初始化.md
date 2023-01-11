@@ -3,5 +3,15 @@
     1. XMLConfigBuilder拿到流对象后，会创建一个XPathParser对象，由它来进行具体的xml解析工作
     2. 调用XMLConfigBuilder.parse()方法进行解析
     3. 首先读取根节点（configuration节点）
-    4. 以configuration节点作为根节点读取properties节点，其内部的propertie节点会先被加载，然后加载properties的url或resource指定位置的配置文件（相同属性覆盖之前的），在之后使用创建SqlSessionFactoryBuilder时指定的properties对象中的配置进行覆盖
-2. 以Configuration做为参数创建DefaultSqlSessionFactory对象供用户使用
+    4. 以configuration节点作为根节点读取properties节点，其内部的propertie节点会先被加载，然后加载properties的url或resource指定位置的配置文件（相同属性覆盖之前的），在之后使用创建SqlSessionFactoryBuilder时指定的properties对象中的配置进行覆盖，最终保存到Properties对象中
+    5. 以configuration节点作为根节点读取typeAliases节点，遍历typeAliases的所有子节点，如果是package则扫描该包下的所有类并注册，否则获取alias和type（类的全限定路径）进行注册，注册到TypeAliasRegistry对象中
+    6. 以configuration节点作为根节点读取plugins节点，进行插件的注册（Interceptor的实现类）。通过别名，或者是全限定类名进行查找，然后通过反射将拦截器进行实例化（如果有properties标签则会调用接口定义的setProperties方法进行属性设置），最终添加到InterceptorChain对象中
+    7. 对象工厂略过
+    8. 对象包装工厂略过
+    9. setting标签比较简单也略过，其实就是解析setting标签下所有配置的kv，并将其设置到configuration对象中，这些配置可能会改变mybatis的行为（比如说驼峰映射，缓存什么的）
+    10. 环境解析，解析environments标签。从该标签，以及其子标签中获取包括事务，数据库连接等信息，并包装成事务工厂和数据源工厂，供其他组件使用
+    11. databaseIdProvider，多数据源，没什么用，略
+    12. 类型处理器typeHandlers节点。解析它向TypeHandlerRegistry注册类型处理器。扫描typeHandlers下面的所有子节点，如果是package则将该包下的所有TypeHandler的实现类注册。否则解析标签的javaType属性、jdbcType属性、handler属性（类的全限定路径）进行注册
+    13. mappers标签解析。读取mappers标签的所有子标签，如果是package则扫描该包下的所有接口，并注册到MapperRegistry中，否则读取标签的resource、url、class属性（三个中只能有一个有值），resource和url通过XMLMapperBuilder来进行解析（最终通过mapper.xml文件中的namespace属性进行接口的寻找然后注册），class直接通过Class.forName加载类并注册到MapperRegistry
+    14. 解析完mapper标签后所有的准备工作都做好了，属性都已解析到configuration对象中了
+2. 以Configuration对象做为参数创建DefaultSqlSessionFactory对象供用户使用
