@@ -20,3 +20,40 @@
       6. 在最终的proceed中，则是调用被增强的方法执行相应逻辑，最后依次弹栈，并将之前暂存的对象重新设置到ThreadLocal中
 4. 调用后得到一个返回值，如果返回的是this则返回其代理对象，否则直接将函数调用后产生的结果返回
 
+## spring4中，AOP调用顺序
+没有异常情况下
+
+1. around环绕通知，前半部分
+2. before前置通知
+3. 业务逻辑
+4. around环绕通知，后半部分
+5. after后置通知
+6. afterReturning返回通知
+
+如果出现异常则变为：
+
+1. around环绕通知，前半部分
+2. before前置通知
+3. 业务逻辑出现异常之前的代码
+4. after后置通知
+5. afterThrowing异常通知
+
+## spring5中，AOP调用顺序
+
+没有异常情况下
+
+1. around环绕通知，前半部分
+2. before前置通知
+3. 业务逻辑
+4. afterReturning返回通知
+5. after后置通知
+6. around环绕通知，后半部分
+
+如果出现异常则变为：
+
+1. around环绕通知，前半部分
+2. before前置通知
+3. 业务逻辑出现异常之前的代码
+4. afterThrowing异常通知
+5. after后置通知
+
