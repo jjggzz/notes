@@ -16,7 +16,7 @@ binlog是在mysql的server层面的日志，记录了mysql执行的DDL和DML操�
 
 假如先写redolog，后写binlog，redolog写入成功，binlog写入失败并宕机，重启后，redolog进行数据恢复，提交的事务被持久化，但是由于binlog未写入成功，进行数据备份或数据恢复时，数据丢失
 
-假日先写binlog，后谢redolog，binlog写入成功，redolog写入失败并宕机，重启后，edolog进行数据恢复，提交的数据丢失，但binlog中有成功的记录，如果有主从同步则主从数据不一致
+假日先写binlog，后谢redolog，binlog写入成功，redolog写入失败并宕机，重启后，redolog进行数据恢复，提交的数据丢失，但binlog中有成功的记录，如果有主从同步则主从数据不一致
 
 所以mysql在事务提交写redolog和binlog时使用了两阶段提交来保证逻辑一致性（假设是双1配置，都是事务提交时进行磁盘同步）：
 

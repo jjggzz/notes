@@ -14,7 +14,7 @@ mysql会优先对**使用频次高的热数据**进行加载。再加上**预读
 
 对于myisam的存储引擎，他只缓存索引，不缓存数据，可以通过key_buffer_size参数查看。
 
-对于innodb的存储引擎，他会将数据页也读入到缓冲池，可以通过innodb_buffer_pool_zise参数查看
+对于innodb的存储引擎，他会将数据页也读入到缓冲池，可以通过innodb_buffer_pool_zise参数查看，默认128M
 
 ## 多个buffer pool实例
 
