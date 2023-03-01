@@ -1,0 +1,4 @@
+# 与kafka对比
+
+kafka的topic下面分为多个partiton，partition是物理概念，对应到磁盘就是一个topic目录下面的一个或多个partition目录。partiton中包含的文件被称为segment，是存放消息的具体文件有三种：.log、.index、.timeindex，当segment到一定大小就会创建新的segment，文件命名规则也是首条目的偏移量kafka中没有tag的概念
+
